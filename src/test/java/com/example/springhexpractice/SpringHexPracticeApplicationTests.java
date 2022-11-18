@@ -1,13 +1,15 @@
 package com.example.springhexpractice;
 
-import com.example.springhexpractice.controller.dto.response.StopsResponse;
-import com.example.springhexpractice.repository.TrainRepository;
-import com.example.springhexpractice.repository.TrainStopRepository;
+import com.example.springhexpractice.domain.foo.aggregate.entity.Train;
+import com.example.springhexpractice.infra.repository.TrainRepository;
+import com.example.springhexpractice.infra.utils.NameAndKind;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +47,34 @@ class SpringHexPracticeApplicationTests {
             System.out.println(m.get("TIME"));
         }
 
+    }
+
+    @Test
+    void test5() {
+        Dog dog = new Dog("bob",21,"fda");
+        Cat cat = new Cat();
+        BeanUtils.copyProperties(dog,cat);
+        System.out.println(cat.getName());
+        System.out.println(cat.getAge());
+    }
+
+    @Test
+    void test6() {
+        System.out.println(NameAndKind.A.getAge());
+        System.out.println(NameAndKind.B.getKind());
+    }
+
+    @Test
+    void test7() {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(MyConfiguration.class);
+        MyService service = ctx.getBean(MyService.class);
+        service.log("Hi");
+    }
+
+    @Test
+    void test8(){
+        List<Train> train1 = this.trainRepository.findAll();
+        System.out.println(train1.get(0).getTrainStops().size());
     }
 
 }
